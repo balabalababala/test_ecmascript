@@ -38,6 +38,7 @@ class Cat {
 }
 
 const cat = new Cat("DD");
+debugger;
 console.log(cat.meow());
 console.log(cat.laugh());
 console.log(cat.entree);
@@ -52,11 +53,12 @@ function superhero(target) {
 @superhero
 class MySuperHero {}
 
+debugger;
 console.log(MySuperHero.isSuperhero); //true
 
-(function() {
+(function () {
   function superhero(isSuperhero) {
-    return function(target) {
+    return function (target) {
       target.isSuperhero = isSuperhero;
     };
   }
@@ -64,10 +66,58 @@ console.log(MySuperHero.isSuperhero); //true
   @superhero(true)
   class MySuperHeroClass {}
 
+  debugger;
   console.log(MySuperHeroClass.isSuperhero); //true
 
   @superhero(false)
   class MySuperHeroClass2 {}
 
+  debugger;
   console.log(MySuperHeroClass2.isSuperhero); //false
+})();
+
+(function () {
+  function mixins(...list) {
+    return function (target) {
+      Object.assign(target.prototype, ...list);
+    };
+  }
+
+  const Foo = {
+    foo() {
+      console.log("foo");
+    },
+  };
+
+  @mixins(Foo)
+  class MyClass {}
+
+  let obj = new MyClass();
+  debugger;
+  obj.foo(); // 'foo'
+})();
+
+(function () {
+  class Math {
+    @log
+    add(a, b) {
+      return a + b;
+    }
+  }
+
+  function log(target, name, descriptor) {
+    var oldValue = descriptor.value;
+
+    descriptor.value = function () {
+      console.log(`Calling ${name} with`, arguments);
+      return oldValue.apply(this, arguments);
+    };
+
+    return descriptor;
+  }
+
+  const math = new Math();
+
+  // passed parameters should get logged now
+  math.add(2, 4);
 })();

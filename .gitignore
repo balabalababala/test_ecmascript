@@ -57,9 +57,10 @@ typings/
 # dotenv environment variables file
 .env
 
-#dist
+dist
 
 yarn.lock
 
 inspect.result.*
 
+out
