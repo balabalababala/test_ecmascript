@@ -35,6 +35,7 @@ module.exports = (env, argv) => {
     entry: {
       "6": ["./src/entry/6.js"],
       "7": ["./src/entry/7.js"],
+      // misc: ["./src/entry/misc.js"],
     },
 
     output: {
@@ -46,6 +47,12 @@ module.exports = (env, argv) => {
       chunkFilename: isProduction
         ? "asset/[name].[chunkhash].js"
         : "asset/[name].js",
+
+      // library: 'someLibName',
+      // // 默认为var模式
+      // // libraryTarget: 'commonjs-module', // "var" | "assign" | "this" | "window" | "self" | "global" | "commonjs" | "commonjs2" | "commonjs-module" | "amd" | "amd-require" | "umd" | "umd2" | "jsonp" | "system"
+      // filename: 'someLibName.js',
+      // auxiliaryComment: 'Test Comment',
     },
 
     module: {
@@ -106,6 +113,21 @@ module.exports = (env, argv) => {
 
         env: isProduction ? "production" : "", // for ejs add script links
       }),
+      // new HtmlWebpackPlugin({
+      //   filename: "misc.html",
+      //   template: "src/entry/misc.html",
+      //   inject: true,
+      //   minify: isProduction
+      //     ? {
+      //         removeComments: true,
+      //         collapseWhitespace: false,
+      //         minifyJS: true,
+      //       }
+      //     : {},
+      //   chunks: ["misc", "runtime", "commons", "vendors"],
+
+      //   env: isProduction ? "production" : "", // for ejs add script links
+      // }),
       // new CopyWebpackPlugin([
       //   {
       //     from: path.resolve(__dirname, "static"),
@@ -131,6 +153,7 @@ module.exports = (env, argv) => {
     },
 
     optimization: {
+      // 拆分模块
       splitChunks: {
         chunks: "all",
         cacheGroups: {
@@ -151,7 +174,7 @@ module.exports = (env, argv) => {
           },
         },
       },
-      runtimeChunk: "single",
+      runtimeChunk: "single", // 运行时，是否单独打包出来
       minimizer: [
         // we specify a custom UglifyJsPlugin here to get source maps in production
         new UglifyJsPlugin({
